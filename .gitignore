@@ -1,0 +1,8 @@
+/target/
+/data/
+/startup.log
+/frontend/generated/
+/.vaadin/
+/node_modules/
+*.mv.db
+*.trace.db
