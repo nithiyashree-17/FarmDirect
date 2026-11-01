@@ -26,7 +26,29 @@ cd farmdirect
 http://localhost:8080
 ```
 
-The database seeds automatically on first run with Tamil Nadu dummy data.
+The database seeds automatically on first run with Tamil Nadu dummy data. Local development uses a file-based H2 database; cloud deployments should use PostgreSQL.
+
+## Deploy to Render
+
+This is a Maven/Spring Boot application. Render should build it from the `Dockerfile` in the repository root.
+
+1. Create a PostgreSQL database in Render.
+2. Create a new **Web Service** from this GitHub repository and select the `main` branch.
+3. Choose **Docker** as the runtime. Render detects the root `Dockerfile`; leave the root directory as `.`.
+4. In the web service's **Environment** settings, add:
+
+   | Key | Value |
+   |-----|-------|
+   | `SPRING_DATASOURCE_URL` | `jdbc:postgresql://<internal-host>:5432/<database-name>` |
+   | `SPRING_DATASOURCE_USERNAME` | The database's internal username |
+   | `SPRING_DATASOURCE_PASSWORD` | The database's password |
+   | `SPRING_H2_CONSOLE_ENABLED` | `false` |
+
+   Use the PostgreSQL host, database name, and credentials shown by Render. Keep the password in Render's environment settings; do not put it in Git. Render supplies `PORT` automatically, and Spring Boot uses it. No separate build or start command is needed for a Docker web service.
+
+5. Deploy the service and open its `onrender.com` URL. The first startup seeds the new database with demo data.
+
+The application still defaults to local H2 when `SPRING_DATASOURCE_URL` is not set. Hibernate detects the database dialect from the configured JDBC URL and driver.
 
 ## Login Credentials
 

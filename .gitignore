@@ -1,8 +1,14 @@
 /target/
+/build/
 /data/
 /startup.log
 /frontend/generated/
 /.vaadin/
 /node_modules/
+/.env
+/.env.*
+!/.env.example
 *.mv.db
 *.trace.db
+*.pem
+*.key
